@@ -10,6 +10,15 @@ class UserController {
             return res.status(400).json({ error: error.message });
         }
     }
+
+    async listNames(req, res) {
+        try {
+            const nomes = await userService.getAllUserNames();
+            return res.status(200).json(nomes);
+        } catch (error) {
+            return res.status(500).json({ error: error.message });
+        }
+    }
 }
 
 module.exports = new UserController();

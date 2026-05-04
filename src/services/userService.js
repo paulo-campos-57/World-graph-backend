@@ -19,6 +19,10 @@ class UserService {
 
         return await userRepository.create(newUser);
     }
+
+    async getAllUserNames() {
+        return await userRepository.findAllNames();
+    }
 }
 
 module.exports = new UserService();

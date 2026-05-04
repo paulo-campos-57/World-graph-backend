@@ -33,6 +33,18 @@ class UserRepository {
             await session.close();
         }
     }
+
+    async findAllNames() {
+        const session = driver.session();
+        try {
+            const query = `MATCH (u:User) RETURN u.nome AS nome`;
+            const result = await session.run(query);
+
+            return result.records.map(record => record.get('nome'));
+        } finally {
+            await session.close();
+        }
+    }
 }
 
 module.exports = new UserRepository();
