@@ -45,6 +45,32 @@ class UserRepository {
             await session.close();
         }
     }
+
+    async update(id, updateData) {
+        const session = driver.session();
+        try {
+            const query = `
+            MATCH (u:User {id: $id})
+            SET u += $updateData
+            RETURN u
+        `;
+            const result = await session.run(query, { id, updateData });
+            return result.records.length > 0 ? result.records[0].get('u').properties : null;
+        } finally {
+            await session.close();
+        }
+    }
+
+    async delete(id) {
+        const session = driver.session();
+        try {
+            const query = `MATCH (u:User {id: $id}) DETACH DELETE u RETURN count(u) as deletedCount`;
+            const result = await session.run(query, { id });
+            return result.records[0].get('deletedCount').toInt() > 0;
+        } finally {
+            await session.close();
+        }
+    }
 }
 
 module.exports = new UserRepository();

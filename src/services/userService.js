@@ -23,6 +23,28 @@ class UserService {
     async getAllUserNames() {
         return await userRepository.findAllNames();
     }
+
+    async updateUser(id, data) {
+        if (data.senha) {
+            const salt = await bcrypt.genSalt(10);
+            data.senha = await bcrypt.hash(data.senha, salt);
+        }
+
+        delete data.id;
+        delete data.criadoEm;
+
+        const updatedUser = await userRepository.update(id, data);
+        if (!updatedUser) throw new Error('Usuário não encontrado');
+
+        delete updatedUser.senha;
+        return updatedUser;
+    }
+
+    async deleteUser(id) {
+        const success = await userRepository.delete(id);
+        if (!success) throw new Error('Usuário não encontrado ou já deletado');
+        return { message: "Usuário removido com sucesso" };
+    }
 }
 
 module.exports = new UserService();

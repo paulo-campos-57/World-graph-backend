@@ -19,6 +19,24 @@ class UserController {
             return res.status(500).json({ error: error.message });
         }
     }
+
+    async update(req, res) {
+        try {
+            const user = await userService.updateUser(req.params.id, req.body);
+            return res.json(user);
+        } catch (error) {
+            return res.status(400).json({ error: error.message });
+        }
+    }
+
+    async delete(req, res) {
+        try {
+            const response = await userService.deleteUser(req.params.id);
+            return res.json(response);
+        } catch (error) {
+            return res.status(404).json({ error: error.message });
+        }
+    }
 }
 
 module.exports = new UserController();
