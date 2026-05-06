@@ -1,13 +1,22 @@
-const ROLES = require('../config/roles');
+const jwt = require('jsonwebtoken');
+const DomainError = require('../utils/DomainError');
 
-const authorizeMestre = (req, res, next) => {
-    const userRole = parseInt(req.headers['x-user-role']);
+const authMiddleware = (req, res, next) => {
+    const authHeader = req.headers.authorization;
 
-    if (userRole === ROLES.MESTRE || userRole === ROLES.HIBRIDO) {
+    if (!authHeader) throw new DomainError('Token não fornecido', 401);
+
+    const [, token] = authHeader.split(' ');
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+        req.user = decoded;
+
         next();
-    } else {
-        return res.status(403).json({ error: "Acesso negado. Apenas Mestres podem realizar esta ação." });
+    } catch (err) {
+        throw new DomainError('Token inválido ou expirado', 401);
     }
 };
 
-module.exports = { authorizeMestre };
+module.exports = authMiddleware;
