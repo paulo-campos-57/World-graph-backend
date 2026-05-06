@@ -21,6 +21,44 @@ class MasterRepository {
         }
     }
 
+    async findAll() {
+        const session = driver.session();
+        try {
+            const query = `MATCH (m:Mestre) RETURN m`;
+            const result = await session.run(query);
+            return result.records.map(record => record.get('m').properties);
+        } finally {
+            await session.close();
+        }
+    }
+
+    async findById(id) {
+        const session = driver.session();
+        try {
+            const query = `MATCH (m:Mestre {id: $id}) RETURN m`;
+            const result = await session.run(query, { id });
+            return result.records.length > 0 ? result.records[0].get('m').properties : null;
+        } finally {
+            await session.close();
+        }
+    }
+
+    async removeMasterProfile(id) {
+        const session = driver.session();
+        try {
+            const query = `
+                MATCH (m:Mestre {id: $id})
+                REMOVE m:Mestre
+                SET m.qtd_mesas = null
+                RETURN m
+            `;
+            const result = await session.run(query, { id });
+            return result.records.length > 0;
+        } finally {
+            await session.close();
+        }
+    }
+
     async vincularMesa(mestreId, mesaId) {
         const session = driver.session();
         try {
