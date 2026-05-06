@@ -1,47 +1,32 @@
 const userService = require('../services/userService');
+const asyncHandler = require('../utils/asyncHandler');
 
 class UserController {
-    async register(req, res) {
-        try {
-            const userData = req.body;
+    register = asyncHandler(async (req, res) => {
+        const userData = req.body;
 
-            if (req.file) {
-                userData.fotoUrl = `/uploads/profile-pics/${req.file.filename}`;
-            }
-
-            const user = await userService.registerUser(userData);
-            return res.status(201).json(user);
-        } catch (error) {
-            return res.status(400).json({ error: error.message });
+        if (req.file) {
+            userData.fotoUrl = `/uploads/profile-pics/${req.file.filename}`;
         }
-    }
 
-    async listNames(req, res) {
-        try {
-            const nomes = await userService.getAllUserNames();
-            return res.status(200).json(nomes);
-        } catch (error) {
-            return res.status(500).json({ error: error.message });
-        }
-    }
+        const user = await userService.registerUser(userData);
+        return res.status(201).json(user);
+    });
 
-    async update(req, res) {
-        try {
-            const user = await userService.updateUser(req.params.id, req.body);
-            return res.json(user);
-        } catch (error) {
-            return res.status(400).json({ error: error.message });
-        }
-    }
+    listNames = asyncHandler(async (req, res) => {
+        const nomes = await userService.getAllUserNames();
+        return res.status(200).json(nomes);
+    });
 
-    async delete(req, res) {
-        try {
-            const response = await userService.deleteUser(req.params.id);
-            return res.json(response);
-        } catch (error) {
-            return res.status(404).json({ error: error.message });
-        }
-    }
+    update = asyncHandler(async (req, res) => {
+        const user = await userService.updateUser(req.params.id, req.body);
+        return res.json(user);
+    });
+
+    delete = asyncHandler(async (req, res) => {
+        const response = await userService.deleteUser(req.params.id);
+        return res.json(response);
+    });
 }
 
 module.exports = new UserController();

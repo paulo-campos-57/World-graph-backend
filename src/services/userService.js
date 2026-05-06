@@ -2,12 +2,13 @@ const userRepository = require('../repositories/userRepository');
 const bcrypt = require('bcryptjs');
 const { v4: uuidv4 } = require('uuid');
 const ROLES = require('../config/roles');
+const DomainError = require('../utils/DomainError');
 
 class UserService {
     validateRole(role) {
         const validRoles = Object.values(ROLES);
         if (!validRoles.includes(parseInt(role))) {
-            throw new Error(`Role inválido. Use: ${ROLES.MESTRE} (Mestre), ${ROLES.JOGADOR} (Jogador) ou ${ROLES.HIBRIDO} (Híbrido)`);
+            throw new DomainError(`Role inválida. Valores permitidos: ${validRoles.join(', ')}`, 400);
         }
     }
 
@@ -15,7 +16,7 @@ class UserService {
         this.validateRole(data.role);
 
         const existingUser = await userRepository.findByEmail(data.email);
-        if (existingUser) throw new Error('Email já cadastrado');
+        if (existingUser) throw new DomainError('Email já cadastrado', 400);
 
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(data.senha, salt);
@@ -51,7 +52,7 @@ class UserService {
         delete data.criadoEm;
 
         const updatedUser = await userRepository.update(id, data);
-        if (!updatedUser) throw new Error('Usuário não encontrado');
+        if (!updatedUser) throw new DomainError('Usuário não encontrado', 404   );
 
         delete updatedUser.senha;
         return updatedUser;
@@ -59,7 +60,7 @@ class UserService {
 
     async deleteUser(id) {
         const success = await userRepository.delete(id);
-        if (!success) throw new Error('Usuário não encontrado ou já deletado');
+        if (!success) throw new DomainError('Usuário não encontrado ou já deletado', 404);
         return { message: "Usuário removido com sucesso" };
     }
 }

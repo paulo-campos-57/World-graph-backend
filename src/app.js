@@ -2,10 +2,12 @@ const express = require('express');
 const { checkConnection } = require('./config/db');
 const userRoutes = require('./routes/userRoutes');
 const masterRoutes = require('./routes/masterRoutes');
+const errorMiddleware = require('./middleware/errorMiddleware');
 const path = require('path');
 
 const app = express();
 app.use(express.json());
+app.use(errorMiddleware);
 
 checkConnection();
 
