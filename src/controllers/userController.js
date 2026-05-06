@@ -3,8 +3,13 @@ const userService = require('../services/userService');
 class UserController {
     async register(req, res) {
         try {
-            const user = await userService.registerUser(req.body);
-            delete user.senha;
+            const userData = req.body;
+
+            if (req.file) {
+                userData.fotoUrl = `/uploads/profile-pics/${req.file.filename}`;
+            }
+
+            const user = await userService.registerUser(userData);
             return res.status(201).json(user);
         } catch (error) {
             return res.status(400).json({ error: error.message });
