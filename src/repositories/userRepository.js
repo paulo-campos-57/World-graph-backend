@@ -49,6 +49,21 @@ class UserRepository {
         }
     }
 
+    async getUserById(id) {
+        console.log("Buscando pelo ID:", id); // Log 1
+        const session = driver.session();
+        try {
+            const query = `MATCH (u:User {id: $id}) RETURN u`;
+            const result = await session.run(query, { id });
+
+            console.log("Registros encontrados:", result.records.length); // Log 2
+
+            return result.records.length > 0 ? result.records[0].get('u').properties : null;
+        } finally {
+            await session.close();
+        }
+    }
+
     async findByEmail(email) {
         const session = driver.session();
         try {
