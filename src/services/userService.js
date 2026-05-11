@@ -39,6 +39,10 @@ class UserService {
     }
 
     async updateUser(id, data) {
+        if (data.email !== undefined && data.email.trim() === "") {
+            throw new DomainError('O campo email é obrigatório e não pode ser vazio', 400);
+        }
+
         if (data.role) {
             this.validateRole(data.role);
         }
@@ -52,7 +56,7 @@ class UserService {
         delete data.criadoEm;
 
         const updatedUser = await userRepository.update(id, data);
-        if (!updatedUser) throw new DomainError('Usuário não encontrado', 404   );
+        if (!updatedUser) throw new DomainError('Usuário não encontrado', 404);
 
         delete updatedUser.senha;
         return updatedUser;
