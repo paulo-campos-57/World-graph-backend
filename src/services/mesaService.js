@@ -1,4 +1,4 @@
-const mesaRepository = require('../repositories/mesaRepository');
+const mesaRepository = require('../repositories/masterRepository');
 const userRepository = require('../repositories/userRepository');
 const DomainError = require('../utils/DomainError');
 const { v4: uuidv4 } = require('uuid');
@@ -18,7 +18,7 @@ class MesaService {
             fotoUrl: dadosMesa.fotoUrl || null
         };
 
-        return await mesaRepository.create(userId, mesaData);
+        return await mesaRepository.createMaster(userId, mesaData);
     }
 }
 

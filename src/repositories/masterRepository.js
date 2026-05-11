@@ -5,28 +5,42 @@ class MasterRepository {
         const session = driver.session();
         try {
             const query = `
-                MATCH (u:User {id: $userId})
-                SET u:Mestre,
-                    u.qtd_mesas = $qtd_mesas
-                RETURN u
+                MATCH (m {id: $mestreId}) 
+                CREATE (mesa:Mesa {
+                    id: $id,
+                    nome: $nome,
+                    historia: $historia,
+                    qtd_max_jogadores: $qtd_max_jogadores,
+                    personagens_npc: $personagens_npc,
+                    sistema: $sistema,
+                    fotoUrl: $fotoUrl,
+                    continente: $continente,
+                    paises: $paises,
+                    cidades: $cidades,
+                    criadoEm: datetime()
+                })
+                CREATE (m)-[:MESTRA]->(mesa)
+                RETURN mesa
             `;
             const result = await session.run(query, {
-                userId,
-                qtd_mesas: parseInt(dadosMaster.qtd_mesas) || 0
+                mestreId: userId,
+                id: dadosMaster.id,
+                nome: dadosMaster.nome,
+                historia: dadosMaster.historia,
+                qtd_max_jogadores: parseInt(dadosMaster.qtd_max_jogadores) || 0,
+                personagens_npc: dadosMaster.personagens_npc || [],
+                sistema: dadosMaster.sistema,
+                fotoUrl: dadosMaster.fotoUrl,
+                continente: dadosMaster.continente,
+                paises: dadosMaster.paises || [],
+                cidades: dadosMaster.cidades || []
             });
 
-            return result.records[0].get('u').properties;
-        } finally {
-            await session.close();
-        }
-    }
+            if (result.records.length === 0) {
+                throw new Error("Erro: O usuário mestre não foi encontrado no banco.");
+            }
 
-    async findAll() {
-        const session = driver.session();
-        try {
-            const query = `MATCH (m:Mestre) RETURN m`;
-            const result = await session.run(query);
-            return result.records.map(record => record.get('m').properties);
+            return result.records[0].get('mesa').properties;
         } finally {
             await session.close();
         }
@@ -35,25 +49,9 @@ class MasterRepository {
     async findById(id) {
         const session = driver.session();
         try {
-            const query = `MATCH (m:Mestre {id: $id}) RETURN m`;
+            const query = `MATCH (m {id: $id}) RETURN m`;
             const result = await session.run(query, { id });
             return result.records.length > 0 ? result.records[0].get('m').properties : null;
-        } finally {
-            await session.close();
-        }
-    }
-
-    async removeMasterProfile(id) {
-        const session = driver.session();
-        try {
-            const query = `
-                MATCH (m:Mestre {id: $id})
-                REMOVE m:Mestre
-                SET m.qtd_mesas = null
-                RETURN m
-            `;
-            const result = await session.run(query, { id });
-            return result.records.length > 0;
         } finally {
             await session.close();
         }
@@ -63,13 +61,13 @@ class MasterRepository {
         const session = driver.session();
         try {
             const query = `
-                MATCH (m:Mestre {id: $mestreId}), (mesa:Mesa {id: $mesaId})
+                MATCH (m {id: $mestreId}), (mesa:Mesa {id: $mesaId})
                 CREATE (m)-[r:MESTRA_EM]->(mesa)
-                SET m.qtd_mesas = m.qtd_mesas + 1
+                SET m.qtd_mesas = coalesce(m.qtd_mesas, 0) + 1
                 RETURN m, mesa
             `;
-            await session.run(query, { mestreId, mesaId });
-            return true;
+            const result = await session.run(query, { mestreId, mesaId });
+            return result.records.length > 0;
         } finally {
             await session.close();
         }
