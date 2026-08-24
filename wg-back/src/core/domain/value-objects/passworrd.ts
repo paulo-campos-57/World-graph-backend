@@ -31,7 +31,7 @@ export class Password {
     return hasLength && hasLetter && hasNumber && hasSpecialChar;
   }
 
-  public getValue() {
+  public getValue(): string {
     return this.value;
   }
 }
