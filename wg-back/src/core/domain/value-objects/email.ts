@@ -2,9 +2,12 @@ export class Email {
   private readonly value: string;
 
   constructor(email: string) {
-    if (!this.validate(email)) throw new Error(`Formato inválido para e-mail`);
+    const cleanEmail = email.trim().toLowerCase();
 
-    this.value = email;
+    if (!this.validate(cleanEmail))
+      throw new Error(`Formato inválido para e-mail`);
+
+    this.value = cleanEmail;
   }
 
   /**
@@ -17,10 +20,9 @@ export class Email {
    * @returns `true` se o e-mail tiver um formato válido, caso contrário `false`.
    */
   private validate(email: string): boolean {
-    const cleanEmail = email.trim().toLowerCase();
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    return emailRegex.test(cleanEmail);
+    return emailRegex.test(email);
   }
 
   public getValue(): string {

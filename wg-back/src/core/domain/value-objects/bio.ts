@@ -3,19 +3,26 @@ export class Bio {
 
   private static readonly MAX_LENGTH = 2000;
 
-  constructor(bio?: string, maxLength = Bio.MAX_LENGTH) {}
+  constructor(bio?: string, maxLength = Bio.MAX_LENGTH) {
+    const rawBio = bio ? bio.trim() : '';
 
-  /**
-   * Valida se a bio está dentro do limite de tamanho máximo
-   *
-   * @param bio - A string contendo a bio.
-   * @param maxLength - O limite (2000) de caracteres máximo para a bio;
-   */
-  private validate(bio: string, maxLength: number): void {
-    if (bio.length > maxLength)
+    if (!this.validate(rawBio, maxLength))
       throw new Error(
         `A bio não pode exceder o limite máximo de ${maxLength} caracteres.`,
       );
+
+    this.value = rawBio;
+  }
+
+  /**
+   * Verifica se a bio excede o limite de valor de caracteres
+   *
+   * @param bio - A string contendo a bio do usuário
+   * @param maxLength - O limite máximo de caracteres permitido (2000)
+   * @returns - Retorna true, caso esteja dentro do limite, e false caso não esteja
+   */
+  private validate(bio: string, maxLength: number): boolean {
+    return bio.length < maxLength;
   }
 
   public getValue(): string {
