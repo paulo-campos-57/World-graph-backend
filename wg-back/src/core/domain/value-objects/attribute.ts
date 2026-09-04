@@ -19,7 +19,7 @@ export class Attribute {
     return isValid;
   }
 
-  private getValue(): number {
+  public getValue(): number {
     return this.value;
   }
 }
