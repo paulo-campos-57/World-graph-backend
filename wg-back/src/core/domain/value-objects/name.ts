@@ -3,7 +3,7 @@ export class Name {
 
   constructor(name: string) {
     if (!this.validate(name))
-      throw new Error(`O nome deve ter entre 2 e 50 carcteres`);
+      throw new Error(`O nome deve ter entre 2 e 50 caracteres`);
 
     this.value = name.toLowerCase().trim();
   }
@@ -18,7 +18,7 @@ export class Name {
    */
   private validate(name: string): boolean {
     const trimmedName = name.trim();
-    const isValid = trimmedName.length >= 2 || trimmedName.length <= 50;
+    const isValid = trimmedName.length >= 2 && trimmedName.length <= 50;
     return isValid;
   }
 
