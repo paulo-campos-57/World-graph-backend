@@ -18,7 +18,7 @@ export class Name {
    */
   private validate(name: string): boolean {
     const trimmedName = name.trim();
-    const isValid = trimmedName.length < 2 || trimmedName.length > 50;
+    const isValid = trimmedName.length >= 2 || trimmedName.length <= 50;
     return isValid;
   }
 
