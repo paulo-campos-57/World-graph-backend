@@ -22,7 +22,7 @@ export class Bio {
    * @returns - Retorna true, caso esteja dentro do limite, e false caso não esteja
    */
   private validate(bio: string, maxLength: number): boolean {
-    return bio.length < maxLength;
+    return bio.length <= maxLength;
   }
 
   public getValue(): string {
@@ -30,7 +30,7 @@ export class Bio {
   }
 
   public isEmpty(): boolean {
-    return this.validate.length === 0;
+    return this.value.length === 0;
   }
 
   public getSummary(length = 100): string {
