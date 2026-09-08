@@ -1,6 +1,8 @@
 import { Name } from '../../../../src/core/domain/value-objects/name';
 
 describe('Name Value Object', () => {
+  const ERROR_MESSAGE = 'O nome deve ter entre 2 e 50 caracteres';
+
   it('deve criar um nome válido com sucesso e aplicar trim e toLowerCase', () => {
     const input = ' John Doe ';
     const name = new Name(input);
@@ -25,24 +27,18 @@ describe('Name Value Object', () => {
   it('deve lançar um erro ao tentar criar um nome com menos de 2 caracters', () => {
     const invalidInput = ' a ';
 
-    expect(() => new Name(invalidInput)).toThrow(
-      'O nome deve ter entre 2 e 50 caracteres',
-    );
+    expect(() => new Name(invalidInput)).toThrow(ERROR_MESSAGE);
   });
 
   it('deve lançar um erro ao tentar criar um nome com mais de 50 caracteres', () => {
     const invalidInput = 'a'.repeat(51);
 
-    expect(() => new Name(invalidInput)).toThrow(
-      'O nome deve ter entre 2 e 50 caracteres',
-    );
+    expect(() => new Name(invalidInput)).toThrow(ERROR_MESSAGE);
   });
 
   it('deve lançar um erro se a string for composta apenas por espaços', () => {
     const invalidInput = '      ';
 
-    expect(() => new Name(invalidInput)).toThrow(
-      'O nome deve ter entre 2 e 50 caracteres',
-    );
+    expect(() => new Name(invalidInput)).toThrow(ERROR_MESSAGE);
   });
 });

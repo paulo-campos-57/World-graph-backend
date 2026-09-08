@@ -1,6 +1,8 @@
 import { Email } from '../../../../src/core/domain/value-objects/email';
 
 describe('Email Value Object', () => {
+  const ERROR_MESSAGE = 'Formato inválido para e-mail';
+
   it('deve criar um e-mail válido com sucesso e aplicar trim e toLowerCase', () => {
     const input = ' USER.TEST@EXAMPLE.COM ';
     const email = new Email(input);
@@ -33,9 +35,7 @@ describe('Email Value Object', () => {
     ];
 
     invalidEmails.forEach((invalidInput) => {
-      expect(() => new Email(invalidInput)).toThrow(
-        'Formato inválido para e-mail',
-      );
+      expect(() => new Email(invalidInput)).toThrow(ERROR_MESSAGE);
     });
   });
 
@@ -43,9 +43,7 @@ describe('Email Value Object', () => {
     const emptyInputs = ['', '   '];
 
     emptyInputs.forEach((invalidInput) => {
-      expect(() => new Email(invalidInput)).toThrow(
-        'Formato inválido para e-mail',
-      );
+      expect(() => new Email(invalidInput)).toThrow(ERROR_MESSAGE);
     });
   });
 });
