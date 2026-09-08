@@ -1,7 +1,7 @@
 import { UUID } from 'crypto';
 import { Name } from '../value-objects/name';
 import { Email } from '../value-objects/email';
-import { Password } from '../value-objects/passworrd';
+import { Password } from '../value-objects/password';
 import { NickName } from '../value-objects/nickname';
 import { Bio } from '../value-objects/bio';
 

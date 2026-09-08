@@ -1,4 +1,4 @@
-import { Password } from '../../../../src/core/domain/value-objects/passworrd';
+import { Password } from '../../../../src/core/domain/value-objects/password';
 
 describe('Password Value Object', () => {
   const ERROR_MESSAGE =
