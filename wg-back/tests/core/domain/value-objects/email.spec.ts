@@ -1,4 +1,4 @@
-import { Email } from './../../../src/core/domain/value-objects/email';
+import { Email } from '../../../../src/core/domain/value-objects/email';
 
 describe('Email Value Object', () => {
   it('deve criar um e-mail válido com sucesso e aplicar trim e toLowerCase', () => {

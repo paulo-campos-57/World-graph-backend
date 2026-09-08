@@ -1,4 +1,4 @@
-import { NickName } from './../../../src/core/domain/value-objects/nickname';
+import { NickName } from '../../../../src/core/domain/value-objects/nickname';
 
 describe('Nickname Value Object', () => {
   it('deve criar um nickname válido e aplicar tirm e toLowerCase', () => {
