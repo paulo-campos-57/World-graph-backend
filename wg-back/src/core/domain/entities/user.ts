@@ -45,6 +45,7 @@ export class User {
   constructor(props: UserProps) {
     this.id = props.id;
     this.name = props.name;
+    this.email = props.email;
     this.password = props.password;
     this.nickname = props.nickname;
     this.bio = props.bio;
