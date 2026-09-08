@@ -15,13 +15,15 @@ export class NickName {
 
   /**
    * Valida se o nickname está dentro dos padrões da plataforma
-   * 
+   *
    * @param nickname - A string com o nickname
-   * @returns - Retorna true, caso esteja dentro dos padrões, e false, caso não esteja.
+   * @returns - Retorna true, caso esteja dentro dos padrões (caracteres e comprimento), e false, caso não esteja.
    */
   private validate(nickname: string): boolean {
     const nickRegex = /^[a-z0-9_-]{3,20}$/;
-    return nickRegex.test(nickname);
+    const isValid =
+      nickRegex.test(nickname) && nickname.length >= 2 && nickname.length <= 50;
+    return isValid;
   }
 
   public getValue(): string {
