@@ -1,4 +1,3 @@
-import { UUID } from 'crypto';
 import { Name } from '../value-objects/name';
 import { Email } from '../value-objects/email';
 import { Password } from '../value-objects/password';
@@ -18,7 +17,7 @@ export enum ExperienceLevel {
 }
 
 export interface UserProps {
-  id: UUID;
+  id: string;
   name: Name;
   email: Email;
   password: Password;
@@ -31,7 +30,7 @@ export interface UserProps {
 }
 
 export class User {
-  public readonly id: UUID;
+  public readonly id: string;
   public name: Name;
   public email: Email;
   public password: Password;

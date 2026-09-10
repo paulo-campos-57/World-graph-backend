@@ -8,7 +8,7 @@ export interface CreateUserInput {
   bio?: string;
   role: UserRole;
   experienceLevel?: ExperienceLevel;
-  preferedSystems?: string[];
+  preferredSystems?: string[];
 }
 
 export interface CreateUserOutput {
