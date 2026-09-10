@@ -53,6 +53,8 @@ export class Character {
   public readonly createdAt: Date;
 
   constructor(props: CharacterProps) {
+    this.validateTypeSpecificProps(props);
+
     this.id = props.id;
     this.ownerId = props.ownerId;
     this.name = props.name;
@@ -77,9 +79,9 @@ export class Character {
     if (
       props.type === CharacterType.PC &&
       props.level &&
-      (props.level < 1 || props.level > 20)
+      (props.level < 1 || props.level > 30)
     ) {
-      throw new Error('O nível do Jogador (PC) deve estar entre 1 e 20.');
+      throw new Error('O nível do Jogador (PC) deve estar entre 1 e 30.');
     }
 
     if (
