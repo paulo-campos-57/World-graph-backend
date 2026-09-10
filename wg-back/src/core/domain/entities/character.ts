@@ -78,7 +78,7 @@ export class Character {
   private validateTypeSpecificProps(props: CharacterProps): void {
     if (
       props.type === CharacterType.PC &&
-      props.level &&
+      props.level !== undefined &&
       (props.level < 1 || props.level > 30)
     ) {
       throw new Error('O nível do Jogador (PC) deve estar entre 1 e 30.');
