@@ -11,7 +11,35 @@
     World Graph - Backend 🇺🇸
   </h1>
   <p>Repository for the backend of the world graph application</p>
+  <p>A robust backend solution engineered to orchestrate complex TTRPG (Tabletop Role-Playing Game) campaign environments. World Graph replaces traditional tabular storage by leveraging a graph database architecture to map intricate entity relationships—visually connecting characters, factions, locations, lore nodes, and plot hooks into an interactive narrative network. Built strictly around Clean Architecture principles to guarantee high testability, maintainability, and total independence between core business logic and external infrastructure.</p>
 </div>
+
+## 🏛️ Project Structure & Architecture
+
+The application is organized strictly following **Clean Architecture** principles, ensuring clear boundaries, high maintainability, and total independence between business logic and external frameworks.
+
+```plaintext
+src/
+├── adapters/          # Interface Adapters (Controllers & Presenters)
+├── core/              # Application Core (Domain & Business Logic)
+│   ├── domain/        # Enterprise Business Rules (Entities & Value Objects)
+│   └── use-cases/     # Application Business Rules (Use Cases per feature)
+├── infra/             # External Frameworks, Drivers & Database Connections
+└── tests/             # Unit and Integration Test Suites****
+```
+
+### Layer Responsibilities
+- `core/domain` (Domain Layer): The innermost layer containing the core business rules and domain invariants.
+  - `entities/`: Core domain objects representing key business concepts (`User`, `Character`, etc.).
+  - `value-objects/`: Immutable objects encapsulated with strict self-validation logic (`Email`, `Password`, `HitPoints`, `Attribute`, etc.).
+- `core/use-cases` (Use Cases Layer): Contains application-specific business rules. Each use case orchestrates domain entities and value objects to execute a specific feature or workflow (e.g., user registration, authentication).
+- `adapters` (Interface Adapters Layer): Translates data between the format most convenient for use cases and entities, and the format most convenient for external agents.
+  - `controllers/`: Receives requests, triggers use cases, and handles incoming input.
+  - `presenters/`: Formats and sanitizes application output for API clients.
+- `infra` (Infrastructure Layer): Contains external details and driver implementations.
+  - `database/`: Database connections, schemas, ORMs, and repository implementations (PostgreSQL & Neo4j).
+  - `http/`: NestJS HTTP servers, routing, framework modules, and middleware setup.
+- `tests` (Testing Directory): Mirrors the domain and use-case structure to ensure comprehensive unit and integration test coverage.
 
 ## 🧪 Code Contribution Guidelines
 To maintain code quality and application stability aligned with Clean Architecture principles, please follow these guidelines when contributing:
@@ -70,7 +98,37 @@ All commit messages must strictly adhere to the following pattern:
     World Graph - Backend 🇧🇷
   </h1>
   <p>Repositório para o backend da aplicação world graph</p>
+  <p>
+    Uma solução de backend robusta projetada para orquestrar ecossistemas complexos de campanhas de RPG de Mesa (TTRPG). O World Graph transcende as estruturas tabulares tradicionais ao utilizar uma arquitetura de banco de dados em grafos para mapear relacionamentos entre entidades—conectando visualmente personagens, facções, locais, elementos de lore e ganchos de trama em uma rede narrativa interativa. Desenvolvido estritamente sob os princípios da Clean Architecture, garantindo alta testabilidade, manutenibilidade e total independência entre a lógica de negócios e a infraestrutura externa.
+  </p>
 </div>
+
+## 🏛️ Estrutura do Projeto e Arquitetura
+
+A aplicação está organizada estritamente sob os princípios da **Clean Architecture**, garantindo limites claros, alta manutenibilidade e total independência entre a lógica de negócios e frameworks externos.
+
+```plaintext
+src/
+├── adapters/          # Adaptadores de Interface (Controllers & Presenters)
+├── core/              # Núcleo da Aplicação (Domínio e Regras de Negócio)
+│   ├── domain/        # Regras de Negócio de Domínio (Entidades e Value Objects)
+│   └── use-cases/     # Regras de Negócio de Aplicação (Casos de Uso por funcionalidade)
+├── infra/             # Frameworks Externos, Drivers e Conexões com Banco
+└── tests/             # Suíte de Testes Unitários e de Integração
+```
+
+### Responsabilidade das Camadas
+- `core/domain` (Camada de Domínio): A camada mais interna contendo as regras de negócio puras e invariantes do domínio.
+  - `entities/`: Objetos centrais de domínio que representam os conceitos principais do sistema (`User`, `Character`, etc.).
+  - `value-objects/`: Objetos imutáveis encapsulados com lógica estrita de autovalidação (`Email`, `Password`, `HitPoints`, `Attribute`, etc.).
+- `core/use-cases` (Camada de Casos de Uso): Contém as regras de negócio específicas da aplicação. Cada caso de uso orquestra entidades e objetos de valor para executar uma ação ou fluxo específico (ex: cadastro de usuário, autenticação).
+- `adapters` (Camada de Adaptadores de Interface): Converte os dados do formato conveniente para os casos de uso para o formato exigido por agentes externos.
+  - `controllers/`: Recebe requisições externas, aciona os casos de uso e trata os dados de entrada.
+  - `presenters/`: Formata e higieniza as respostas enviadas para os clientes da API.
+- `infra` (Camada de Infraestrutura): Contém os detalhes técnicos externos e implementações de drivers.
+  - `database/`: Conexões com bancos de dados, schemas, ORMs e implementações reais de repositórios (PostgreSQL e Neo4j).
+  - `http/`: Servidores HTTP NestJS, rotas, módulos do framework e middlewares.
+- `tests` (Diretório de Testes): Espelha a estrutura do domínio e dos casos de uso para garantir cobertura abrangente de testes unitários e de integração.
 
 ## 🧪 Diretrizes para Subida de Código e Testes
 Para manter a qualidade do código e a estabilidade da aplicação alinhadas aos princípios de **Clean Architecture**, siga as regras abaixo ao enviar novas contribuições:
