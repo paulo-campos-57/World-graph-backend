@@ -23,6 +23,7 @@ export interface UserProps {
   password: Password;
   nickname: NickName;
   bio?: Bio;
+  profilePicPath?: string;
   role: UserRole;
   experienceLevel?: ExperienceLevel;
   preferedSystems?: string[];
@@ -36,6 +37,7 @@ export class User {
   public password: Password;
   public nickname: NickName;
   public bio?: Bio;
+  public profilePicPath?: string;
   public role: UserRole;
   public experienceLevel?: ExperienceLevel;
   public preferedSystems?: string[];
@@ -48,6 +50,7 @@ export class User {
     this.password = props.password;
     this.nickname = props.nickname;
     this.bio = props.bio;
+    this.profilePicPath = props.profilePicPath;
     this.role = props.role;
     this.experienceLevel = props.experienceLevel;
     this.preferedSystems = props.preferedSystems;
