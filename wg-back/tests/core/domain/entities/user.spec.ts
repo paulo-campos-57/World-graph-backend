@@ -1,10 +1,12 @@
-import { randomUUID } from 'crypto';
+import { randomUUID } from 'node:crypto';
+
 import {
   User,
   UserRole,
   ExperienceLevel,
   UserProps,
 } from './../../../../src/core/domain/entities/user';
+
 import { Name } from '../../../../src/core/domain/value-objects/name';
 import { Email } from '../../../../src/core/domain/value-objects/email';
 import { Password } from '../../../../src/core/domain/value-objects/password';
@@ -25,6 +27,7 @@ describe('User Entity', () => {
     const props: UserProps = {
       ...createValidUserProps(),
       bio: new Bio('Jogador experiente de D&D 5e'),
+      profilePicPath: 'users/5e343cb3-b8f9-4354-b3b9-b4f4c8b17d5d/profile.webp',
       experienceLevel: ExperienceLevel.VETERAN,
       preferedSystems: ['D&D 5e', 'Tormenta20'],
       createdAt: new Date('2026-01-01T00:00:00.000Z'),
@@ -38,13 +41,18 @@ describe('User Entity', () => {
     expect(user.password.getValue()).toBe('Password123!');
     expect(user.nickname.getValue()).toBe('johndoe');
     expect(user.bio?.getValue()).toBe('Jogador experiente de D&D 5e');
+
+    expect(user.profilePicPath).toBe(
+      'users/5e343cb3-b8f9-4354-b3b9-b4f4c8b17d5d/profile.webp',
+    );
+
     expect(user.role).toBe(UserRole.PLAYER);
     expect(user.experienceLevel).toBe(ExperienceLevel.VETERAN);
     expect(user.preferedSystems).toEqual(['D&D 5e', 'Tormenta20']);
     expect(user.createdAt).toEqual(props.createdAt);
   });
 
-  it('deve definir a data de criação padrão (createdAt) caso não seja fornecida', () => {
+  it('deve definir a data de criação padrão caso não seja fornecida', () => {
     const props = createValidUserProps();
     const beforeCreation = new Date();
 
@@ -56,12 +64,16 @@ describe('User Entity', () => {
     );
   });
 
-  it('deve criar um usuário com os papéis DUNGEON_MASTER e BOTH', () => {
-    const propsDm = {
+  it('deve criar usuários com os papéis DUNGEON_MASTER e BOTH', () => {
+    const propsDm: UserProps = {
       ...createValidUserProps(),
       role: UserRole.DUNGEON_MASTER,
     };
-    const propsBoth = { ...createValidUserProps(), role: UserRole.BOTH };
+
+    const propsBoth: UserProps = {
+      ...createValidUserProps(),
+      role: UserRole.BOTH,
+    };
 
     const dmUser = new User(propsDm);
     const bothUser = new User(propsBoth);
@@ -70,13 +82,25 @@ describe('User Entity', () => {
     expect(bothUser.role).toBe(UserRole.BOTH);
   });
 
-  it('deve permitir criar um usuário sem campos opcionais (bio, experienceLevel, preferedSystems)', () => {
+  it('deve permitir criar usuário sem campos opcionais', () => {
     const props = createValidUserProps();
 
     const user = new User(props);
 
     expect(user.bio).toBeUndefined();
+    expect(user.profilePicPath).toBeUndefined();
     expect(user.experienceLevel).toBeUndefined();
     expect(user.preferedSystems).toBeUndefined();
+  });
+
+  it('deve criar usuário apenas com profilePicPath opcional', () => {
+    const profilePicPath = 'users/user-id/profile-picture/avatar-123.webp';
+
+    const user = new User({
+      ...createValidUserProps(),
+      profilePicPath,
+    });
+
+    expect(user.profilePicPath).toBe(profilePicPath);
   });
 });
