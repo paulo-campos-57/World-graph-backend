@@ -52,7 +52,9 @@ export class CreateUserUseCase {
       preferedSystems: input.preferredSystems,
     });
 
-    await this.userRepository.create(user);
+    const created = await this.userRepository.create(user);
+
+    if (!created) throw new Error(`Não foi possível criar o usuário.`);
 
     return {
       id: user.id,
